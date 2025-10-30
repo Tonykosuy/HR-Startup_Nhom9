@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARTUP ZONE - Kế hoạch tổ chức</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Neutral (Nền: gray-50, Thẻ: white, Nhấn: indigo-600) -->
+    <!-- Application Structure Plan:
+        Cấu trúc: Ứng dụng một trang (SPA) với thanh điều hướng cố định bên trái (trên desktop) và nội dung chính bên phải. Các mục điều hướng bao gồm: Tổng quan, Chiến lược (Chủ đề + Cố vấn), Truyền thông (Kế hoạch + Kênh), Đối tác (Nhà tài trợ + Tiếp cận), và Vận hành (Xử lý tình huống).
+        Tương tác: Người dùng nhấp vào một mục điều hướng. JavaScript sẽ ẩn tất cả các phần nội dung khác và chỉ hiển thị phần nội dung tương ứng (ví dụ: nhấp vào "Truyền thông" sẽ hiển thị nội dung của "Truyền thông"). Bên trong mục "Truyền thông", có một hệ thống tab phụ để xem các giai đoạn.
+        Lý do: Tài liệu nguồn là một bộ câu trả lời chi tiết cho 5 câu hỏi riêng biệt của một case study. Cấu trúc SPA dạng tab/bảng điều khiển này là cách trực quan nhất để phân tách các mảng công việc (chiến lược, truyền thông, vận hành...) giúp người dùng dễ dàng tập trung vào từng phần mà không bị rối. Nó biến một tài liệu văn bản tuyến tính thành một công cụ khám phá phi tuyến tính, dễ tiếp thu.
+    -->
+    <!-- Visualization & Content Choices:
+        - Tổng quan: Văn bản giới thiệu. Mục tiêu: Định hướng. Trình bày: Thẻ chào mừng. Tương tác: Không. Lý do: Giới thiệu bối cảnh của SPA. Phương thức: HTML/Tailwind.
+        - Q1 (Chủ đề): Thông tin: Tên chủ đề + Lý do. Mục tiêu: Thông báo. Trình bày: Thẻ nội dung nổi bật. Tương tác: Không. Lý do: Làm nổi bật ý tưởng cốt lõi. Phương thức: HTML/Tailwind.
+        - Q2 (Cố vấn): Thông tin: 4 nhóm cố vấn. Mục tiêu: Sắp xếp. Trình bày: Lưới 2x2 gồm các thẻ, mỗi thẻ cho một nhóm. Tương tác: Không. Lý do: Dễ dàng so sánh 4 nhóm. Phương thức: HTML/Tailwind Grid.
+        - Q3 (Truyền thông): Thông tin: Kế hoạch 5 giai đoạn + các kênh. Mục tiêu: Hiển thị quy trình/thời gian. Trình bày: (A) Hệ thống tab tương tác cho 5 giai đoạn. (B) Lưới thẻ cho các kênh. Tương tác: Nhấp vào tab giai đoạn để xem chi tiết (JS). Lý do: Cấu trúc tab là cách tốt nhất để khám phá kế hoạch nhiều giai đoạn. Phương thức: HTML/Tailwind/JS.
+        - Q4 (Nhà tài trợ): Thông tin: 4 nhóm đối tượng + quy trình tiếp cận. Mục tiêu: Sắp xếp & Hiển thị quy trình. Trình bày: (A) Lưới 2x2 cho các nhóm. (B) Sơ đồ quy trình (flowchart) bằng HTML. Tương tác: Không. Lý do: Tách biệt rõ ràng "là ai" (lưới) và "làm thế nào" (sơ đồ). Phương thức: HTML/Tailwind.
+        - Q5 (Vận hành): Thông tin: Giải pháp xử lý tình huống nhiều bước. Mục tiêu: Hiển thị quy trình. Trình bày: Sơ đồ quy trình (flowchart) bằng HTML. Tương tác: Không. Lý do: Sơ đồ là cách rõ ràng nhất để trình bày một giải pháp từng bước. Phương thức: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        .nav-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .phase-tab.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .content-panel {
+            display: none;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        .phase-panel {
+            display: none;
+        }
+        .phase-panel.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans leading-relaxed text-gray-800">
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 md:p-8">
+        
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-700">Phân tích Kế hoạch: Cuộc thi STARTUP ZONE</h1>
+            <p class="text-lg text-gray-600 mt-2">Một bản phân tích chi tiết về chiến lược, truyền thông, đối tác và vận hành.</p>
+        </header>
+
+        <div class="md:flex md:space-x-8">
+            
+            <nav class="md:w-1/4 mb-8 md:mb-0">
+                <ul class="sticky top-8 space-y-2">
+                    <li><button data-tab="overview" class="nav-btn active w-full text-left p-3 rounded-lg font-medium hover:bg-indigo-100 transition-colors duration-200">Tổng quan</button></li>
+                    <li><button data-tab="strategy" class="nav-btn w-full text-left p-3 rounded-lg font-medium hover:bg-indigo-100 transition-colors duration-200">Chiến lược Cốt lõi</button></li>
+                    <li><button data-tab="comms" class="nav-btn w-full text-left p-3 rounded-lg font-medium hover:bg-indigo-100 transition-colors duration-200">Kế hoạch Truyền thông</button></li>
+                    <li><button data-tab="partners" class="nav-btn w-full text-left p-3 rounded-lg font-medium hover:bg-indigo-100 transition-colors duration-200">Đối tác & Nhà tài trợ</button></li>
+                    <li><button data-tab="ops" class="nav-btn w-full text-left p-3 rounded-lg font-medium hover:bg-indigo-100 transition-colors duration-200">Vận hành & Rủi ro</button></li>
+                </ul>
+            </nav>
+
+            <main class="md:w-3/4">
+                
+                <section id="overview-content" class="content-panel active bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-4">Chào mừng đến với Bảng phân tích Kế hoạch</h2>
+                    <p class="mb-4">Cuộc thi STARTUP ZONE là một sân chơi học thuật nhằm phát triển năng lực khởi nghiệp, công nghệ và đổi mới sáng tạo cho sinh viên. Đây không chỉ là một cuộc thi, mà là một hành trình kết nối sinh viên với các chuyên gia và xây dựng một cộng đồng tài năng trẻ.</p>
+                    <p class="mb-4">Ứng dụng tương tác này được thiết kế để phân tích chi tiết các hạng mục công việc cần thiết để tổ chức thành công cuộc thi. Hãy sử dụng thanh điều hướng bên cạnh để khám phá từng khía cạnh của kế hoạch, từ việc xây dựng chiến lược, triển khai truyền thông, tìm kiếm đối tác, đến xử lý các tình huống vận hành.</p>
+                    <div class="mt-6 p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-lg">
+                        <p class="font-medium text-indigo-800">Mục tiêu của ứng dụng này là biến một bản kế hoạch trên giấy thành một công cụ trực quan, dễ hiểu và dễ dàng truy cập, cho phép các thành viên ban tổ chức nhanh chóng nắm bắt và tham chiếu thông tin.</p>
+                    </div>
+                </section>
+
+                <section id="strategy-content" class="content-panel bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-4">Chiến lược Cốt lõi</h2>
+                    <p class="mb-6">Phần này trình bày hai trụ cột chiến lược của cuộc thi: (1) Chủ đề xuyên suốt để định hình thông điệp và (2) Ban cố vấn chuyên môn để đảm bảo chất lượng và uy tín.</p>
+
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Câu 1: Đề xuất Chủ đề</h3>
+                        <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                            <h4 class="text-lg font-bold text-indigo-600">"GIẢI MÃ TÁC ĐỘNG" (Decode the Impact)</h4>
+                            <p class="mt-2"><strong>Lý do đề xuất:</strong></p>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Tập trung vào "Tác động":</strong> Thay vì chỉ tập trung vào "lợi nhuận" hay "công nghệ", chủ đề này hướng sinh viên đến việc tạo ra các dự án có tác động tích cực và bền vững đến xã hội, kinh tế, hoặc môi trường. Đây là xu hướng khởi nghiệp hiện đại.</li>
+                                <li><strong>Tính học thuật ("Giải mã"):</strong> Từ "Giải mã" (Decode) thể hiện tính chất học thuật của cuộc thi, khuyến khích sinh viên phân tích, nghiên cứu sâu để tìm ra giải pháp, không chỉ là những ý tưởng bề nổi.</li>
+                                <li><strong>Phổ rộng:</strong> Chủ đề không bó hẹp trong một lĩnh vực (như FinTech, EdTech) mà cho phép các ý tưởng từ nhiều ngành nghề khác nhau cùng tham gia, miễn là chứng minh được "tác động" của mình.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Câu 2: Ban Cố vấn Chuyên môn</h3>
+                        <p class="mb-4">Để đảm bảo chất lượng chuyên môn đa chiều, ban cố vấn nên bao gồm 4 nhóm đối tượng chính:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">1. Founders & CEOs</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Cung cấp góc nhìn thực chiến, kinh nghiệm "xương máu" về xây dựng sản phẩm, quản trị và gọi vốn. Họ là nguồn cảm hứng trực tiếp cho thí sinh.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">2. Nhà đầu tư & Quỹ (VCs)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Giúp đánh giá tính khả thi tài chính, tiềm năng thị trường và mô hình kinh doanh. Họ biết rõ một ý tưởng "có thể bán được" hay không.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">3. Chuyên gia Công nghệ & Đổi mới</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Đánh giá tính khả thi về mặt kỹ thuật, công nghệ lõi và mức độ đổi mới sáng tạo của dự án so với thị trường.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">4. Chuyên gia Học thuật</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Đại diện từ các trường đại học (Trưởng khoa QTKD, CNTT...) đảm bảo tính học thuật, phương pháp luận nghiên cứu và kết nối với mạng lưới sinh viên.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="comms-content" class="content-panel bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-4">Kế hoạch Truyền thông</h2>
+                    <p class="mb-6">Phần này trình bày kế hoạch truyền thông chi tiết, bao gồm các giai đoạn, nội dung bài đăng và các kênh triển khai chính để tối đa hóa phạm vi tiếp cận và thu hút thí sinh.</p>
+
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Câu 3: Các giai đoạn Truyền thông</h3>
+                        <div class="border-b border-gray-200 mb-4">
+                            <nav class="flex flex-wrap -mb-px space-x-4">
+                                <button class="phase-tab active whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 border-transparent" data-phase="p1">Giai đoạn 1: Teaser</button>
+                                <button class="phase-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 border-transparent" data-phase="p2">Giai đoạn 2: Khởi động</button>
+                                <button class="phase-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 border-transparent" data-phase="p3">Giai đoạn 3: Kêu gọi</button>
+                                <button class="phase-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 border-transparent" data-phase="p4">Giai đoạn 4: Đồng hành</button>
+                                <button class="phase-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 border-transparent" data-phase="p5">Giai đoạn 5: Chung kết</button>
+                            </nav>
+                        </div>
+                        
+                        <div id="p1-panel" class="phase-panel active">
+                            <h4 class="font-semibold text-lg">Giai đoạn 1: Teaser (Trước 10 ngày)</h4>
+                            <p class="mt-2"><strong>Mục tiêu:</strong> Gây tò mò, tạo "sóng" ban đầu.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Bài đăng 1:</strong> Ảnh bìa + Avatar đồng loạt. Ảnh "Coming Soon" với chủ đề "GIẢI MÃ TÁC ĐỘNG".</li>
+                                <li><strong>Bài đăng 2:</strong> Video/GIF ngắn hé lộ logo, thông điệp chính.</li>
+                                <li><strong>Nội dung:</strong> Đặt câu hỏi tu từ: "Bạn có ý tưởng? Bạn muốn tạo tác động? Điều gì đang đến...?"</li>
+                            </ul>
+                        </div>
+                        <div id="p2-panel" class="phase-panel">
+                            <h4 class="font-semibold text-lg">Giai đoạn 2: Khởi động (Ngày D)</h4>
+                            <p class="mt-2"><strong>Mục tiêu:</strong> Công bố chính thức, mở đơn đăng ký.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Bài đăng 1:</strong> Infographic tổng quan (Timeline, Vòng thi, Giải thưởng).</li>
+                                <li><strong>Bài đăng 2:</strong> Bài PR chính thức (Thể lệ, Đối tượng, Link đăng ký).</li>
+                                <li><strong>Bài đăng 3:</strong> Công bố Ban Cố vấn (dạng carousel ảnh + chức vụ).</li>
+                            </ul>
+                        </div>
+                        <div id="p3-panel" class="phase-panel">
+                            <h4 class="font-semibold text-lg">Giai đoạn 3: Kêu gọi (Trong thời gian mở đơn)</h4>
+                            <p class="mt-2"><strong>Mục tiêu:</strong> Thúc đẩy đăng ký, làm rõ giá trị cuộc thi.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Series bài:</strong> "Vì sao nên tham gia STARTUP ZONE?" (Lợi ích: Giải thưởng, Networking, Học hỏi).</li>
+                                <li><strong>Series bài:</strong> Giới thiệu chi tiết từng Cố vấn/Giám khảo.</li>
+                                <li><strong>Bài đăng:</strong> Công bố Nhà tài trợ (tăng uy tín).</li>
+                                <li><strong>Bài đăng:</strong> Đếm ngược, nhắc nhở deadline đăng ký.</li>
+                            </ul>
+                        </div>
+                        <div id="p4-panel" class="phase-panel">
+                            <h4 class="font-semibold text-lg">Giai đoạn 4: Đồng hành (Trong các vòng thi)</h4>
+                            <p class="mt-2"><strong>Mục tiêu:</strong> Giữ nhiệt, cập nhật tiến độ.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Bài đăng:</strong> Công bố Top 40, Top 10...</li>
+                                <li><strong>Nội dung:</strong> Chia sẻ "Behind the Scenes" (ảnh BTC làm việc, thí sinh training).</li>
+                                <li><strong>Bài đăng:</strong> Lời khuyên từ Ban Cố vấn, Nhà tài trợ.</li>
+                            </ul>
+                        </div>
+                        <div id="p5-panel" class="phase-panel">
+                            <h4 class="font-semibold text-lg">Giai đoạn 5: Chung kết & Sau Chung kết</h4>
+                            <p class="mt-2"><strong>Mục tiêu:</strong> Tạo dấu ấn, tri ân.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Bài đăng:</strong> Livestream Đêm Chung kết.</li>
+                                <li><strong>Bài đăng:</strong> Công bố Quán quân và các giải phụ.</li>
+                                <li><strong>Bài đăng:</strong> Album ảnh sự kiện.</li>
+                                <li><strong>Bài đăng:</strong> Lời cảm ơn (Tri ân Cố vấn, Nhà tài trợ, Thí sinh, BTC).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Các kênh Truyền thông</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">1. Facebook (Fanpage CLB, Trường)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Kênh chính, tiếp cận rộng rãi nhất đến đối tượng sinh viên. Dễ dàng đăng tải đa dạng nội dung (ảnh, video, infographic, livestream).</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">2. LinkedIn (Cá nhân BTC, CLB)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Xây dựng hình ảnh chuyên nghiệp, tiếp cận Ban Cố vấn và Nhà tài trợ. Thí sinh cũng dùng LinkedIn để xây dựng thương hiệu cá nhân.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">3. Kênh của Trường/Khoa</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Tăng cường uy tín. Xin đăng bài lên Website/Fanpage của Trường, Khoa, Đoàn Thanh niên để tiếp cận chính thống.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">4. Email Marketing</h4>
+                                <p class="text-sm mt-1"><strong>Lý do:</strong> Chăm sóc thí sinh. Gửi mail thông báo (đậu, rớt), nhắc nhở, cung cấp tài liệu. Sử dụng data email sinh viên của trường (nếu có).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="partners-content" class="content-panel bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-4">Đối tác & Nhà tài trợ</h2>
+                    <p class="mb-6">Phần này phân tích các đối tượng nhà tài trợ (NTT) tiềm năng, lý do tiếp cận và cách thức tiếp cận hiệu quả để đảm bảo nguồn lực cho cuộc thi.</p>
+
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Câu 4: Đối tượng Nhà tài trợ</h3>
+                        <p class="mb-4">Chúng ta tiếp cận NTT không chỉ vì tiền, mà vì sự "win-win": Họ được quảng bá thương hiệu, tiếp cận nhân tài; chúng ta được nguồn lực.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">1. Tập đoàn Công nghệ (FPT, Viettel, Grab, MoMo)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do tiếp cận:</strong> Họ luôn cần "săn" nhân tài công nghệ và ý tưởng đổi mới. Tài trợ cho cuộc thi là một hoạt động Employer Branding (Xây dựng thương hiệu tuyển dụng) hiệu quả.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">2. Ngân hàng & Tài chính (Vietcombank, Techcombank, MB)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do tiếp cận:</strong> Gắn liền với các dự án Chuyển đổi số (Digital Transformation) và FinTech. Họ muốn xây dựng hình ảnh năng động, hỗ trợ thế hệ trẻ (CSR).</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">3. Quỹ đầu tư & Vườn ươm (VinaCapital, 500 Startups)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do tiếp cận:</strong> Đây là "khách hàng" trực tiếp. Họ muốn tiếp cận sớm các ý tưởng tiềm năng để đầu tư. Họ có thể tài trợ hoặc cử chuyên gia làm cố vấn.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-bold text-indigo-600">4. Đơn vị Dịch vụ (Co-working, Luật, Kế toán, AWS)</h4>
+                                <p class="text-sm mt-1"><strong>Lý do tiếp cận:</strong> Tài trợ Bằng Hiện vật/Dịch vụ (ví dụ: Gói chỗ ngồi Co-working, Gói tư vấn pháp lý, Gói AWS credit). Đây là chi phí marketing của họ để có khách hàng mới.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Cách thức Tiếp cận Nhà tài trợ</h3>
+                        <p class="mb-4">Quy trình tiếp cận cần chuyên nghiệp và cá nhân hóa:</p>
+                        <div class="space-y-4">
+                            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">1</div>
+                                <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                    <h4 class="font-semibold">Nghiên cứu & Xây dựng Hồ sơ</h4>
+                                    <p class="text-sm">Xây dựng Gói tài trợ (Benefits Package) rõ ràng (Kim cương, Vàng, Bạc...). Nghiên cứu NTT để biết họ thường tài trợ ai, liên hệ bộ phận nào (Marketing, HR, CSR).</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-center h-8">
+                                <span class="text-indigo-600 text-2xl font-light">↓</span>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">2</div>
+                                <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                    <h4 class="font-semibold">Tiếp cận "Ấm" (Warm Intro)</h4>
+                                    <p class="text-sm">Ưu tiên hàng đầu. Tận dụng mối quan hệ từ Ban Cố vấn, Thầy Cô trong trường, cựu sinh viên đang làm ở công ty đó để được giới thiệu. Gửi email lạnh (cold email) có tỉ lệ thành công thấp.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-center h-8">
+                                <span class="text-indigo-600 text-2xl font-light">↓</span>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">3</div>
+                                <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                    <h4 class="font-semibold">Gửi Hồ sơ & Trình bày</h4>
+                                    <p class="text-sm">Gửi hồ sơ (proposal) chuyên nghiệp, cá nhân hóa (nêu rõ lý do VÌ SAO họ nên tài trợ). Sẵn sàng cho một cuộc gặp (online/offline) để trình bày.</p>
+                                </div>
+                            </div>
+                            
+                             <div class="flex justify-center h-8">
+                                <span class="text-indigo-600 text-2xl font-light">↓</span>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">4</div>
+                                <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                    <h4 class="font-semibold">Theo sát & Ký hợp đồng</h4>
+                                    <p class="text-sm">Chủ động follow-up sau 3-5 ngày. Khi đã đồng ý, cần có hợp đồng/thỏa thuận tài trợ (MOU) rõ ràng về quyền lợi và trách nhiệm đôi bên.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="ops-content" class="content-panel bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-4">Vận hành & Rủi ro</h2>
+                    <p class="mb-6">Phần này tập trung vào việc xử lý một tình huống rủi ro cụ thể trong vận hành: Thí sinh vượt qua vòng 1 nhưng từ chối tham gia vòng 2, gây ảnh hưởng đến số lượng.</p>
+
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Câu 5: Giải quyết tình huống thiếu hụt thí sinh</h3>
+                    <p class="mb-4"><strong>Mục tiêu:</strong> Đảm bảo đủ 40 thí sinh (hoặc số lượng tương đương) cho Vòng 2 một cách công bằng, chuyên nghiệp và kịp thời.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">1</div>
+                            <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                <h4 class="font-semibold">Thiết kế Email thông báo "Đậu" thông minh</h4>
+                                <p class="text-sm">Email chúc mừng Top 40 phải có một nút Call-to-Action (CTA) rõ ràng: <strong>"XÁC NHẬN THAM GIA VÒNG 2"</strong>. Đặt deadline xác nhận (ví dụ: trong vòng 48 giờ). Điều này lọc ngay được số lượng từ chối chủ động.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-start h-8 ml-6">
+                            <span class="text-indigo-600 text-2xl font-light">↓</span>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">2</div>
+                            <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                <h4 class="font-semibold">Theo dõi & Liên hệ cá nhân</h4>
+                                <p class="text-sm">BTC (Ban chuyên môn/Hậu cần) lập danh sách theo dõi xác nhận. Với những thí sinh:
+                                <br><strong>(A) Không phản hồi email:</strong> Gọi điện/nhắn tin trực tiếp để xác nhận.
+                                <br><strong>(B) Phản hồi "Từ chối":</strong> Gửi 1 email/tin nhắn ngắn để hỏi lý do (để rút kinh nghiệm), và chúc họ may mắn.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-start h-8 ml-6">
+                            <span class="text-indigo-600 text-2xl font-light">↓</span>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">3</div>
+                            <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                <h4 class="font-semibold">Kích hoạt Danh sách Chờ (Waitlist)</h4>
+                                <p class="text-sm">Đây là bước quan trọng nhất. Khi lập danh sách Top 40, BTC phải lập luôn danh sách "chờ" (ví dụ: Top 41 đến 50).
+                                <br>Nếu có <strong>X</strong> thí sinh từ Top 40 từ chối, BTC sẽ ngay lập tức gửi email "Chúc mừng" cho <strong>X</strong> thí sinh trong danh sách chờ (theo thứ tự từ 41 trở xuống) và yêu cầu họ xác nhận.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-start h-8 ml-6">
+                            <span class="text-indigo-600 text-2xl font-light">↓</span>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl">4</div>
+                            <div class="p-4 bg-gray-100 rounded-lg flex-1">
+                                <h4 class="font-semibold">Chốt danh sách & Công bố</h4>
+                                <p class="text-sm">Lặp lại bước 3 cho đến khi đủ 40 thí sinh xác nhận. Sau đó mới công bố danh sách Top 40 chính thức lên Fanpage.
+                                <br><strong>Giải pháp chủ động (cho lần sau):</strong> Công bố "Top 40 và 10 thí sinh trong danh sách chờ" để quản lý kỳ vọng ngay từ đầu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            const phaseTabs = document.querySelectorAll('.phase-tab');
+            const phasePanels = document.querySelectorAll('.phase-panel');
+
+            function switchTab(buttons, panels, button, panelPrefix, activeClass) {
+                const tabId = button.dataset[panelPrefix];
+                
+                buttons.forEach(btn => {
+                    btn.classList.remove(activeClass);
+                });
+                button.classList.add(activeClass);
+
+                panels.forEach(panel => {
+                    panel.style.display = 'none';
+                    panel.classList.remove('active');
+                });
+                
+                const targetPanel = document.getElementById(`${tabId}-panel`);
+                if (targetPanel) {
+                    targetPanel.style.display = 'block';
+                    targetPanel.classList.add('active');
+                } else {
+                    const genericTarget = document.getElementById(`${tabId}-content`);
+                    if (genericTarget) {
+                        genericTarget.style.display = 'block';
+                        genericTarget.classList.add('active');
+                    }
+                }
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(navButtons, contentPanels, button, 'tab', 'active');
+                });
+            });
+
+            phaseTabs.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(phaseTabs, phasePanels, button, 'phase', 'active');
+                });
+            });
+
+            document.getElementById('overview-content').style.display = 'block';
+            document.getElementById('p1-panel').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+    
